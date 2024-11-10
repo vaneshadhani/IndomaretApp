@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return Item</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; font-family: Arial, sans-serif; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #fff; border-bottom: 2px solid #eaeaea; margin-bottom: 20px; }
+        .store-info h1 { font-size: 1.75rem; font-weight: bold; color: #212529; margin: 0; }
+        .store-info p { color: #6c757d; margin: 0; font-size: 0.9rem; }
+        .time-info { text-align: right; color: #6c757d; font-size: 0.9rem; }
+        .container {  max-width: 600px;  margin-top: 30px; }
+        .title-section {  text-align: center;  margin-bottom: 20px; }
+        .title-section h1 {  font-size: 2rem; font-weight: bold; color: #007bff; }
+        .form-control { height: 50px; font-size: 1rem; }
+        .button-group { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
+        .btn { flex-grow: 1; height: 50px; font-size: 1rem; }
+        .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); text-align: center; }
+        .popup.show { display: block; }
+        .popup-overlay {  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 1000; }
+        .popup-overlay.show {  display: block;  }
+        .blur {  filter: blur(4px); }
+    </style>
+</head>
+<body>
+
+    <header class="header-content">
+        <div class="store-info">
+            <h1>V-Market</h1>
+            <p>Alamat: Jln. Sekar Lindu 20, Kota Bekasi</p>
+        </div>
+        <div class="time-info">
+            <p id="tanggal">Hari/Tanggal: </p>
+            <p id="waktu">Pukul: </p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="title-section">
+            <h1>Retur Barang</h1>
+        </div>
+
+        <form id="returForm">
+            <div class="mb-3">
+                <label for="kodeBarang" class="form-label">Kode Barang</label>
+                <input type="text" class="form-control" id="kodeBarang" name="kodeBarang" required>
+            </div>
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Keterangan</label>
+                <input type="text" class="form-control" id="category" name="category" required>
+            </div>
+            <div class="button-group">
+                <button type="button" id="backButton" class="btn btn-secondary">Kembali</button>
+                <button type="button" id="refreshButton" class="btn btn-primary">Refresh</button>
+                <button type="submit" class="btn btn-success">Return Item</button>
+            </div>
+        </form>
+
+        <div id="successPopup" class="popup">
+            <p id="successMessage"></p>
+            <button onclick="printRetur()" class="btn btn-primary">Print Retur</button>
+            <button onclick="closePopup()" class="btn btn-secondary">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('returForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const kodeBarang = document.getElementById('kodeBarang').value;
+            const quantity = document.getElementById('quantity').value;
+            const category = document.getElementById('category').value;
+    
+            fetch('/retur', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ kodeBarang, quantity, category })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('successMessage').textContent = data.message;
+                    document.getElementById('successPopup').classList.add('show');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    
+        function closePopup() {
+            document.getElementById('successPopup').classList.remove('show');
+        }
+        function printRetur() {
+            closePopup();
+            window.print();
+        }
+        function updateDateTime() {
+            const date = new Date();
+            const hariList = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const bulanList = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const hari = hariList[date.getDay()];
+            const tanggal = date.getDate();
+            const bulan = bulanList[date.getMonth()];
+            const tahun = date.getFullYear();
+            
+            const jam = String(date.getHours()).padStart(2, '0');
+            const menit = String(date.getMinutes()).padStart(2, '0');
+            const detik = String(date.getSeconds()).padStart(2, '0');
+    
+            document.getElementById('tanggal').textContent = `Hari/Tanggal: ${hari}, ${tanggal} ${bulan} ${tahun}`;
+            document.getElementById('waktu').textContent = `Pukul: ${jam}.${menit}.${detik}`;
+        }
+    
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+        document.getElementById('refreshButton').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.reload();
+        });
+    
+        document.getElementById('backButton').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = '/dashboard';
+        });
+    </script>    
+</body>
+</html>

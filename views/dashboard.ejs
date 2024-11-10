@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="store-info">
+                <h1>V-Market</h1>
+                <p>Alamat: Jln. Sekar Lindu 20, Kota Bekasi</p>
+            </div>
+        </div>
+        <div class="time-info">
+            <p id="tanggal">Hari/Tanggal: </p>
+            <p id="waktu">Pukul: </p>
+        </div>
+    </header>
+    <div class="main">
+        <div class="sidebar">
+            <button class="menu-item" onclick="window.location.href='/personalia'">Presensi / Personalia</button>
+            <button class="menu-item" onclick="window.location.href='/sales'">Sales</button>
+            <button class="menu-item" onclick="window.location.href='/stok'">Stok</button>
+            <button class="menu-item">Operasional</button>
+            <button class="menu-item">Administrasi</button>
+            <button class="menu-item" onclick="window.location.href='/retur'">Retur Barang</button>
+            <button class="menu-item">Menu EDP</button>
+            <button class="menu-item logout" onclick="openLogoutModal()">Logout</button>
+        </div>
+
+        <div class="content">
+
+        </div>
+    </div>
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h2>Konfirmasi Logout</h2>
+            <p>Apakah Anda yakin ingin logout?</p>
+            <button class="confirm" onclick="logout()">Iya</button>
+            <button class="cancel" onclick="closeLogoutModal()">Tidak</button>
+        </div>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

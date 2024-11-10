@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presensi/Personalia</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/presensi.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="store-info">
+                <h1>Presensi / Personalia</h1>
+                <p>Manajemen Kehadiran dan Profil Karyawan</p>
+            </div>
+        </div>
+        <div class="time-info">
+            <p id="tanggal">Hari/Tanggal: </p>
+            <p id="waktu">Pukul: </p>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="sidebar">
+            <button class="menu-item" onclick="openModal()">Presensi</button>
+            <button class="menu-item" onclick="openProfileModal()">Profil</button>
+            <button class="menu-item logout" onclick="window.location.href='/dashboard'">Kembali</button>
+        </div>
+
+        <div class="content">
+            <h2>Report Presensi</h2>
+            <table border="1" cellpadding="10">
+                <thead>
+                    <tr>
+                        <th>NIK</th>
+                        <th>Status</th>
+                        <th>Tanggal Presensi</th>
+                    </tr>
+                </thead>
+                <tbody id="presensiTable">
+                    <% if (presensiData.length > 0) { %>
+                        <% presensiData.forEach(function(presensi) { %>
+                            <tr>
+                                <td><%= presensi.nik %></td>
+                                <td><%= presensi.status %></td>
+                                <td><%= presensi.tanggal %></td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="3"></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal untuk form Presensi -->
+<div id="presensiModal" class="modal">
+    <div class="modal-content">
+        <h2>Presensi Karyawan</h2>
+        <form id="presensiForm">
+            <input type="text" id="nik" name="nik" placeholder="Masukkan NIK" required><br><br>
+            <label for="status">Status:</label>
+            <select id="status" name="status" required>
+                <option value="Hadir">Hadir</option>
+                <option value="Tidak Hadir">Tidak Hadir</option>
+            </select><br><br>
+            <button type="submit" class="confirm">Submit</button>
+            <button type="button" class="cancel" onclick="closeModal()">Batal</button>
+        </form>
+    </div>
+</div>
+
+<!-- Tombol Profil untuk membuka modal -->
+<button class="menu-item" onclick="openProfileModal()">Profil</button>
+
+<!-- Modal untuk Sign In Profil -->
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <h2>Sign In Profil</h2>
+        <form id="profileForm">
+            <input type="text" id="profileNIK" name="nik" placeholder="Masukkan NIK" required><br><br>
+            <input type="password" id="profilePassword" name="password" placeholder="Masukkan Password" required><br><br>
+            <button type="submit" class="confirm">Sign In</button>
+            <button type="button" class="cancel" onclick="closeProfileModal()">Batal</button>
+        </form>
+    </div>
+</div>
+
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/presensi.js"></script> <!-- Script khusus untuk modal dan presensi -->
+    <script src="/js/profil.js"></script> <!-- Tambahkan ini di akhir halaman -->
+</body>
+</html>

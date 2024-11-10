@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Karyawan</title>
+    <link rel="stylesheet" href="/css/profil.css">
+</head>
+<body>
+    <div class="dropdown">
+        <button class="dropbtn">⋮</button>
+        <div class="dropdown-content">
+            <a href="#" id="ajuanCuti">Ajuan Cuti</a>
+            <a href="/personalia" class="back-button">Sign-out</a>
+        </div>
+    </div>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="/images/profile-picture.png" alt="Foto Karyawan" class="profile-picture">
+            <h1><%= karyawan.nama %></h1>
+            <h3><%= karyawan.jabatan %></h3>
+        </div>
+        <div class="profile-details">
+            <div class="detail-row">
+                <strong>NIK:</strong> <span><%= karyawan.nik %></span>
+            </div>
+            <div class="detail-row">
+                <strong>Tempat Lahir:</strong> <span><%= karyawan.tempat_lahir %></span>
+            </div>
+            <div class="detail-row">
+                <strong>Tanggal Lahir:</strong> <span><%= new Date(karyawan.tanggal_lahir).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+            </div>
+            <div class="detail-row">
+                <strong>Awal Masuk:</strong> <span><%= new Date(karyawan.awal_masuk).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+            </div>
+            <div class="detail-row">
+                <strong>Status Kerja:</strong> <span><%= karyawan.status_kerja %></span>
+            </div>
+            <div class="detail-row">
+                <strong>Domisili:</strong> <span><%= karyawan.domisili %></span>
+            </div>
+            <div class="detail-row">
+                <strong>Status Perkawinan:</strong> <span><%= karyawan.status_perkawinan %></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/profil.js"></script>
+</body>
+</html>

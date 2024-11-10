@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form action="/login" method="POST">
+            <input type="text" id="nik" name="nik" placeholder="NIK" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <% if (errorMessage) { %>
+                <div class="error-message"><%= errorMessage %></div>
+            <% } %>
+            <button type="submit">Login</button>
+        </form>
+        <span class="reset-password" onclick="openModal()">Forgot Password?</span>
+    </div>
+
+    <div id="resetPasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Reset Password</h2>
+            <form id="resetPasswordForm" method="POST">
+                <input type="text" id="resetNIK" name="nik" placeholder="Enter your NIK" required><br><br>
+                <input type="password" id="resetPassword" name="newPassword" placeholder="Enter new password" required><br><br>
+                <button type="submit">Reset Password</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/scripts.js"></script>
+</body>
+</html>
